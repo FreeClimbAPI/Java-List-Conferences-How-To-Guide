@@ -1,8 +1,8 @@
 /* 
  * AFTER RUNNING PROJECT WITH COMMAND: 
  * `gradle build && java -Dserver.port=0080 -jar build/libs/gs-spring-boot-0.1.0.jar`
- * RUN CURL COMMAND TO GET LIST OF QUEUES:
- *    `curl {baseUrl}/queues`
+ * RUN CURL COMMAND TO GET LIST OF CONFERENCES:
+ *    `curl {baseUrl}/conferences`
  * EXPECT JSON TO BE RETURNED:
  * [{"uri":"/Accounts/{accountId}/Conferences/{conferenceId}",
  * "dateCreated":"{dateCreated}",
@@ -25,12 +25,12 @@ package main.java.list_conferences;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.vailsys.persephony.api.PersyClient;
-import com.vailsys.persephony.api.PersyException;
-import com.vailsys.persephony.api.conference.Conference;
-import com.vailsys.persephony.api.conference.ConferenceStatus;
-import com.vailsys.persephony.api.conference.ConferenceList;
-import com.vailsys.persephony.api.conference.ConferencesSearchFilters;
+import com.vailsys.freeclimb.api.FreeClimbClient;
+import com.vailsys.freeclimb.api.FreeClimbException;
+import com.vailsys.freeclimb.api.conference.Conference;
+import com.vailsys.freeclimb.api.conference.ConferenceStatus;
+import com.vailsys.freeclimb.api.conference.ConferenceList;
+import com.vailsys.freeclimb.api.conference.ConferencesSearchFilters;
 
 import java.util.ArrayList;
 
@@ -48,8 +48,8 @@ public class ListConferencesController {
     filters.setAlias("Tutorial Conference");
     filters.setStatus(ConferenceStatus.TERMINATED); // statuses include EMPTY, IN_PROGRESS, POPULATED, TERMINATED
     try {
-      // Create PersyClient object
-      PersyClient client = new PersyClient(accountId, authToken);
+      // Create FreeClimbClient object
+      FreeClimbClient client = new FreeClimbClient(accountId, authToken);
       // Invoke get method to retrieve first page of conferences with matching alias
       ConferenceList conferenceList = client.conferences.get(filters);
 
@@ -68,7 +68,7 @@ public class ListConferencesController {
         }
         return conferences;
       }
-    } catch (PersyException pe) {
+    } catch (FreeClimbException pe) {
       System.out.println(pe.getMessage());
     }
     return null;

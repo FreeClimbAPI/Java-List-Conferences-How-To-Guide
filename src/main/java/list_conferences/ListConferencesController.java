@@ -36,9 +36,9 @@ import java.util.ArrayList;
 
 @RestController
 public class ListConferencesController {
-  // Get accountID and authToken from environment variables
+  // Get accountID and apiKey from environment variables
   private String accountId = System.getenv("ACCOUNT_ID");
-  private String authToken = System.getenv("AUTH_TOKEN");
+  private String apiKey = System.getenv("API_KEY");
 
   @RequestMapping("/conferences")
   public ArrayList<Conference> listConferences() {
@@ -49,7 +49,7 @@ public class ListConferencesController {
     filters.setStatus(ConferenceStatus.TERMINATED); // statuses include EMPTY, IN_PROGRESS, POPULATED, TERMINATED
     try {
       // Create FreeClimbClient object
-      FreeClimbClient client = new FreeClimbClient(accountId, authToken);
+      FreeClimbClient client = new FreeClimbClient(accountId, apiKey);
       // Invoke get method to retrieve first page of conferences with matching alias
       ConferenceList conferenceList = client.conferences.get(filters);
 
